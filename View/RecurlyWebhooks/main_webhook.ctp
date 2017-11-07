@@ -1,0 +1,1 @@
+<!-- Blank file to handle request properly and reducing error logs for main webhook function -->
