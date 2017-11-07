@@ -11,6 +11,7 @@ App::import('Vendor', 'hashids/lib/Hashids/Hashids');
  * @package       app.Controller
  * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
  */
+define('RECURLY_API_KEY', 'RECURLY_PRIVATE_KEY');
 class RecurlyController extends AppController {
 
     /**

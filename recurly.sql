@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `iterate_poc`
+-- Database: `recurly_app_poc`
 --
 
 -- --------------------------------------------------------
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `recurly_subscriptions` (
   `current_period_started_at` datetime DEFAULT NULL COMMENT 'GMT',
   `current_period_ends_at` datetime DEFAULT NULL COMMENT 'GMT',
   `collection_method` varchar(50) DEFAULT NULL,
-  `iterate_status` int(2) DEFAULT '1' COMMENT '1=active,2=cancelled',
+  `recurly_app_status` int(2) DEFAULT '1' COMMENT '1=active,2=cancelled',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `recurly_webhook_accounts` (
   `last_name` varchar(100) DEFAULT NULL COMMENT 'recurly account last name',
   `company_name` varchar(100) DEFAULT NULL COMMENT 'recurly account company name',
   `whole_request` text COMMENT 'whole request that we get from recurly webhook',
-  `iterate_status` tinyint(4) DEFAULT '1' COMMENT 'status maintain by us',
+  `recurly_app_status` tinyint(4) DEFAULT '1' COMMENT 'status maintain by us',
   `cron_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'flag set to 1 if cron has proceed it',
   `cron_group_id` int(11) DEFAULT '0' COMMENT 'group of records to process for one cron',
   `created` datetime DEFAULT NULL,
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS `recurly_webhook_invoices` (
   `net_terms` int(11) DEFAULT '0',
   `collection_method` varchar(50) DEFAULT NULL,
   `whole_request` text COMMENT 'whole request that we get from recurly webhook',
-  `iterate_status` tinyint(4) DEFAULT '1' COMMENT 'status maintain by us',
+  `recurly_app_status` tinyint(4) DEFAULT '1' COMMENT 'status maintain by us',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS `recurly_webhook_payments` (
   `gateway_error_codes` varchar(50) DEFAULT NULL COMMENT 'related to fail payment. not in use for use currently',
   `failure_type` varchar(255) DEFAULT NULL COMMENT 'related to fail payment. not in use for use currently',
   `whole_request` text COMMENT 'whole request that we get from recurly webhook',
-  `iterate_status` tinyint(4) DEFAULT '1' COMMENT 'status maintain by us',
+  `recurly_app_status` tinyint(4) DEFAULT '1' COMMENT 'status maintain by us',
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `recurly_webhook_subscriptions` (
   `trial_ends_at` datetime DEFAULT NULL,
   `collection_method` varchar(50) DEFAULT NULL,
   `whole_request` text COMMENT 'whole request that we get from recurly webhook',
-  `iterate_status` tinyint(4) DEFAULT '1' COMMENT 'status maintain by us',
+  `recurly_app_status` tinyint(4) DEFAULT '1' COMMENT 'status maintain by us',
   `cron_flag` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'flag set to 1 if cron has proceed it',
   `cron_group_id` int(11) DEFAULT '0' COMMENT 'group of records to process for one cron',
   `created` datetime DEFAULT NULL,

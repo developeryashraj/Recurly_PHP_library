@@ -13,6 +13,7 @@ App::import('Vendor', 'recurly/lib/recurly');
  * @link https://docs.recurly.com/docs/webhooks how webhook work and things to keep in mind.
  * 
  */
+define('RECURLY_API_KEY', 'RECURLY_PRIVATE_KEY');
 class RecurlyWebhooksController extends AppController {
 
     /**

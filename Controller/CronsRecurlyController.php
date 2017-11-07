@@ -12,6 +12,7 @@ App::import('Vendor', 'recurly/lib/recurly');
  * @link http://book.cakephp.org/2.0/en/controllers/pages-controller.html
  */
 $GLOBALS['LIMITS']['webhookProcessLimit'] = 100;
+define('RECURLY_API_KEY', 'RECURLY_PRIVATE_KEY');
 class CronsRecurlyController extends AppController {
 
     public $uses = array('UserMaster','RecurlyWebhookSubscription','RecurlySubscription','EntityPlanDetail','PlanMaster',
@@ -46,7 +47,7 @@ class CronsRecurlyController extends AppController {
         // <editor-fold defaultstate="collapsed" desc="Get List of ids to update cron_group_id with $currentUnixTime">
         $options = array();
         $options['fields'] = array('RecurlyWebhookSubscription.id','RecurlyWebhookSubscription.id');
-        $options['conditions'] = array('RecurlyWebhookSubscription.cron_group_id'=>0, 'RecurlyWebhookSubscription.iterate_status' => 1,'RecurlyWebhookSubscription.cron_flag'=>0);
+        $options['conditions'] = array('RecurlyWebhookSubscription.cron_group_id'=>0, 'RecurlyWebhookSubscription.recurly_app_status' => 1,'RecurlyWebhookSubscription.cron_flag'=>0);
         $options['limit'] = $GLOBALS['LIMITS']['webhookProcessLimit'];
         $options['order'] = array('RecurlyWebhookSubscription.id'=>'ASC');
         $getSubscriptionLogLists = $this->RecurlyWebhookSubscription->find('list', $options);
@@ -59,7 +60,7 @@ class CronsRecurlyController extends AppController {
         
         // <editor-fold defaultstate="collapsed" desc="update selected records with $currentUnixTime">
         $updateFields = array('RecurlyWebhookSubscription.cron_group_id' => $currentUnixTime, 'RecurlyWebhookSubscription.modified' => "'" . date('Y-m-d H:i:s') . "'");
-        $updateConditions = array('RecurlyWebhookSubscription.id' => $getSubscriptionLogLists, 'RecurlyWebhookSubscription.cron_group_id'=>0, 'RecurlyWebhookSubscription.iterate_status' => 1);
+        $updateConditions = array('RecurlyWebhookSubscription.id' => $getSubscriptionLogLists, 'RecurlyWebhookSubscription.cron_group_id'=>0, 'RecurlyWebhookSubscription.recurly_app_status' => 1);
         $this->RecurlyWebhookSubscription->updateAll($updateFields, $updateConditions);
         // </editor-fold>
         
@@ -67,7 +68,7 @@ class CronsRecurlyController extends AppController {
         $options = array();
         $options['fields'] = array('RecurlyWebhookSubscription.id','RecurlyWebhookSubscription.uuid');
         $options['group'] = array('RecurlyWebhookSubscription.uuid');
-        $options['conditions'] = array('RecurlyWebhookSubscription.iterate_status' => 1, 'RecurlyWebhookSubscription.cron_group_id' => $currentUnixTime,'RecurlyWebhookSubscription.cron_flag'=>0);
+        $options['conditions'] = array('RecurlyWebhookSubscription.recurly_app_status' => 1, 'RecurlyWebhookSubscription.cron_group_id' => $currentUnixTime,'RecurlyWebhookSubscription.cron_flag'=>0);
         $options['order'] = array('RecurlyWebhookSubscription.id'=>'ASC');
         $getSubscriptionLogs = $this->RecurlyWebhookSubscription->find('list', $options);
         // </editor-fold>
@@ -189,7 +190,7 @@ class CronsRecurlyController extends AppController {
         // <editor-fold defaultstate="collapsed" desc="Get List of ids to update cron_group_id with $currentUnixTime">
         $options = array();
         $options['fields'] = array('RecurlyWebhookAccount.id','RecurlyWebhookAccount.id');
-        $options['conditions'] = array('RecurlyWebhookAccount.type !='=>'billing_info_updated_notification','RecurlyWebhookAccount.cron_group_id'=>0, 'RecurlyWebhookAccount.iterate_status' => 1,'RecurlyWebhookAccount.cron_flag'=>0);
+        $options['conditions'] = array('RecurlyWebhookAccount.type !='=>'billing_info_updated_notification','RecurlyWebhookAccount.cron_group_id'=>0, 'RecurlyWebhookAccount.recurly_app_status' => 1,'RecurlyWebhookAccount.cron_flag'=>0);
         $options['limit'] = $GLOBALS['LIMITS']['webhookProcessLimit'];
         $options['order'] = array('RecurlyWebhookAccount.id'=>'ASC');
         $getAccountLogLists = $this->RecurlyWebhookAccount->find('list', $options);
@@ -202,7 +203,7 @@ class CronsRecurlyController extends AppController {
         
         // <editor-fold defaultstate="collapsed" desc="update selected records with $currentUnixTime">
         $updateFields = array('RecurlyWebhookAccount.cron_group_id' => $currentUnixTime, 'RecurlyWebhookAccount.modified' => "'" . date('Y-m-d H:i:s') . "'");
-        $updateConditions = array('RecurlyWebhookAccount.type !='=>'billing_info_updated_notification','RecurlyWebhookAccount.id' => $getAccountLogLists, 'RecurlyWebhookAccount.cron_group_id'=>0, 'RecurlyWebhookAccount.iterate_status' => 1);
+        $updateConditions = array('RecurlyWebhookAccount.type !='=>'billing_info_updated_notification','RecurlyWebhookAccount.id' => $getAccountLogLists, 'RecurlyWebhookAccount.cron_group_id'=>0, 'RecurlyWebhookAccount.recurly_app_status' => 1);
         $this->RecurlyWebhookAccount->updateAll($updateFields, $updateConditions);
         // </editor-fold>
         
@@ -210,7 +211,7 @@ class CronsRecurlyController extends AppController {
         $options = array();
         $options['fields'] = array('RecurlyWebhookAccount.id','RecurlyWebhookAccount.account_code');
         $options['group'] = array('RecurlyWebhookAccount.account_code');
-        $options['conditions'] = array('RecurlyWebhookAccount.type !='=>'billing_info_updated_notification','RecurlyWebhookAccount.iterate_status' => 1, 'RecurlyWebhookAccount.cron_group_id' => $currentUnixTime,'RecurlyWebhookAccount.cron_flag'=>0);
+        $options['conditions'] = array('RecurlyWebhookAccount.type !='=>'billing_info_updated_notification','RecurlyWebhookAccount.recurly_app_status' => 1, 'RecurlyWebhookAccount.cron_group_id' => $currentUnixTime,'RecurlyWebhookAccount.cron_flag'=>0);
         $options['order'] = array('RecurlyWebhookAccount.id'=>'ASC');
         $getSubscriptionLogs = $this->RecurlyWebhookAccount->find('list', $options);
         // </editor-fold>
@@ -283,7 +284,7 @@ class CronsRecurlyController extends AppController {
                  */
                 if(!empty($account->state) && !in_array($account->state, $stateToConvertFreePlan) && in_array($getSubscription['EntityPlanDetail']['state'], $stateToConvertFreePlan)){
                     $options = array();
-                    $options['conditions'] = array('RecurlyWebhookSubscription.uuid'=>$getSubscription['RecurlySubscription']['uuid'],'RecurlyWebhookSubscription.iterate_status'=>1);
+                    $options['conditions'] = array('RecurlyWebhookSubscription.uuid'=>$getSubscription['RecurlySubscription']['uuid'],'RecurlyWebhookSubscription.recurly_app_status'=>1);
                     $options['order'] = array('RecurlyWebhookSubscription.id'=>'DESC');
                     $getLastRecord = $this->RecurlyWebhookSubscription->find('first',$options);
                     
@@ -331,7 +332,7 @@ class CronsRecurlyController extends AppController {
         // <editor-fold defaultstate="collapsed" desc="Get List of ids to update cron_group_id with $currentUnixTime">
         $options = array();
         $options['fields'] = array('RecurlyWebhookAccount.id','RecurlyWebhookAccount.id');
-        $options['conditions'] = array('RecurlyWebhookAccount.type'=>'billing_info_updated_notification','RecurlyWebhookAccount.cron_group_id'=>0, 'RecurlyWebhookAccount.iterate_status' => 1,'RecurlyWebhookAccount.cron_flag'=>0);
+        $options['conditions'] = array('RecurlyWebhookAccount.type'=>'billing_info_updated_notification','RecurlyWebhookAccount.cron_group_id'=>0, 'RecurlyWebhookAccount.recurly_app_status' => 1,'RecurlyWebhookAccount.cron_flag'=>0);
         $options['limit'] = $GLOBALS['LIMITS']['webhookProcessLimit'];
         $options['order'] = array('RecurlyWebhookAccount.id'=>'ASC');
         $getAccountLogLists = $this->RecurlyWebhookAccount->find('list', $options);
@@ -344,7 +345,7 @@ class CronsRecurlyController extends AppController {
         
         // <editor-fold defaultstate="collapsed" desc="update selected records with $currentUnixTime">
         $updateFields = array('RecurlyWebhookAccount.cron_group_id' => $currentUnixTime, 'RecurlyWebhookAccount.modified' => "'" . date('Y-m-d H:i:s') . "'");
-        $updateConditions = array('RecurlyWebhookAccount.type'=>'billing_info_updated_notification','RecurlyWebhookAccount.id' => $getAccountLogLists, 'RecurlyWebhookAccount.cron_group_id'=>0, 'RecurlyWebhookAccount.iterate_status' => 1);
+        $updateConditions = array('RecurlyWebhookAccount.type'=>'billing_info_updated_notification','RecurlyWebhookAccount.id' => $getAccountLogLists, 'RecurlyWebhookAccount.cron_group_id'=>0, 'RecurlyWebhookAccount.recurly_app_status' => 1);
         $this->RecurlyWebhookAccount->updateAll($updateFields, $updateConditions);
         // </editor-fold>
         
@@ -352,7 +353,7 @@ class CronsRecurlyController extends AppController {
         $options = array();
         $options['fields'] = array('RecurlyWebhookAccount.id','RecurlyWebhookAccount.account_code');
         $options['group'] = array('RecurlyWebhookAccount.account_code');
-        $options['conditions'] = array('RecurlyWebhookAccount.type'=>'billing_info_updated_notification','RecurlyWebhookAccount.iterate_status' => 1, 'RecurlyWebhookAccount.cron_group_id' => $currentUnixTime,'RecurlyWebhookAccount.cron_flag'=>0);
+        $options['conditions'] = array('RecurlyWebhookAccount.type'=>'billing_info_updated_notification','RecurlyWebhookAccount.recurly_app_status' => 1, 'RecurlyWebhookAccount.cron_group_id' => $currentUnixTime,'RecurlyWebhookAccount.cron_flag'=>0);
         $options['order'] = array('RecurlyWebhookAccount.id'=>'ASC');
         $getSubscriptionLogs = $this->RecurlyWebhookAccount->find('list', $options);
         // </editor-fold>

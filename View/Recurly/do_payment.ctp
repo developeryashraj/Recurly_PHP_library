@@ -160,7 +160,7 @@
 <script src="https://js.recurly.com/v3/recurly.js"></script>
 <script>
     // Configure recurly.js
-    recurly.configure('ewr1-FbAh5occLHzIz9githajTD');
+    recurly.configure('RECURLY_PUBLIC_KEY');
     // On form submit, we stop submission to go get the token
     $('form').on('submit', function (event) {
         event.preventDefault();

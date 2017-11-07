@@ -379,7 +379,7 @@
         <script>
             // Configure recurly.js
             recurly.configure({
-                publicKey: 'ewr1-FbAh5occLHzIz9githajTD',
+                publicKey: 'RECURLY_PUBLIC_KEY',
                 style: {
                     all: {
                         fontFamily: 'Open Sans',
